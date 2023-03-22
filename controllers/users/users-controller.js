@@ -5,6 +5,8 @@ const UserController = (app) => {               // use express instance app to d
     app.get('/api/users', findUsers);           // request pattern /api/users to call a function
     app.get('api/users/:uid', findUserById);    // map path pattern to handler function
     app.post('/api/users', createUser);         // map URL pattern to handler function
+    app.delete('/api/users/:uid', deleteUser);  // map URL pattern to handler function
+    app.put('/api/users/:uid', updateUser);
 }
 
 const findUserById = (req, res) => {            // function called if URL matches pattern
@@ -38,6 +40,18 @@ const deleteUser = (req, res) => {
     usr._id !== userId);                        // whose ID is the ID of the user we want to remove
   res.sendStatus(200);                          // respond with the success code
 }
+
+const updateUser = (req, res) => {              // handle PUT /api/users/:uid
+ const userId = req.params['uid'];              // get user ID from path
+ const updates = req.body;                      // BODY inclues updated fields
+ users = users.map((usr) =>                     // create a new array of users
+   usr._id === userId ?                         // if current user's ID matches ID we want to update
+     {...usr, ...updates} :                     // merge old user with new updates
+     usr                                        // otherwise keep the old user
+ );
+ res.sendStatus(200);                           // return OK
+}
+
 
 
 export default UserController                   // exports so app.js can import
