@@ -4,7 +4,8 @@ const createTuit = async (req, res) => {
   const newTuit = req.body;
   newTuit.likes = 0;
   newTuit.liked = false;
-  const insertedTuit = await tuitsdao.createTuit(newTuit);
+  newTuit.image = "nasalogo.png";
+  const insertedTuit = await tuitsDao.createTuit(newTuit);
   res.json(insertedTuit);
 }
 
